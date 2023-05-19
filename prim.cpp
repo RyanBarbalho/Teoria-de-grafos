@@ -1,87 +1,110 @@
-//algoritmo de prim que printa um unico valor que é a soma de todas as 
-//arestas que compoem a arvore geradora minima
-#include<bits/stdc++.h>
-#include <vector>
+#include<iostream>
+#include<list>
+#include<queue>
+#include<vector>
+#include<limits.h>
 using namespace std;
+#define inf 9999999
+//algoritmo de prim
 
-//v = numero de vertices, E = numero de arestas
-int V, E;
-void montargrafo(vector<vector<pair<int,int>>> grafo, int E){
-    for(int i = 0; i < E; i++){
-        //vertice U vai para o vertice V que tem peso W
-        int u, v, custo;
-        cin >> u >> v >> custo;
+class grafo{
+    private:
+        int V;
         
-        //vertice, peso
-        grafo[u].push_back({v,custo});
-            //aresta do v para o u com custo x
-        grafo[v].push_back({u,custo});
-    }
-}
+        list<pair<int, int>> *adj;
 
-void prim(){
-    
-    vector<vector<pair<int,int>>> grafo(V);
-    //exemplo -> grafo(0) -> (1,25), (2,10)
-    //lista de adjacencia
-    
-    //montar o grafo
-    for(int i = 0; i < E; i++){
-        //vertice U vai para o vertice V que tem peso W
-        int u, v, custo;
-        cin >> u >> v >> custo;
-        
-        //vertice, peso
-        grafo[u].push_back({v,custo});
-            //aresta do v para o u com custo x
-        grafo[v].push_back({u,custo});
-    }
-    ////////////////////////////////////////////////////////////////////////   
-        //fila de prioridade
-        priority_queue<pair<int,int>> prim;
-        //marcador se visitei ou nao
-        vector<bool> visitado(V, false);
-        //marco o primeiro como visitado
-        visitado[0] = true;
-        //edge = menor aresta
-        //adicionei todas as arestas que saem do vertice 0
-        for(pair<int,int> edge: grafo[0]){
-            //adiciono custo negativo primeiro e depois coloco a aresta
-            //pois o maior negativo vai ser o menor positivo
-            prim.push({-edge.second, edge.first});
+    public:
+    //construtor
+        grafo(int V){
+            this->V = V+1;
+            //criar a lista de adjacencia (lista de listas)
+            adj = new list<pair<int, int>>[V+1];
         }
-        
-        
-        int soma = 0;
-        //enquanto prim nao for vazio
-        //vou pegar a menor aresta e ir para o vertice no qual nao visitei
-        while(prim.size()){
-            //pego a menor aresta da fila de prioridade
-            pair<int,int> edge = prim.top();
-            prim.pop();
-            //se o vertice foi visitado ignoro
-            if(visitado[edge.second]) continue;
+        void addAresta(int u, int v, int w){
+            
+            //vertice u vai para o vertice v com peso w
+            adj[u].push_back(make_pair(v, w));
+            adj[v].push_back(make_pair(u, w));
+        }
+        void primAlgorithm(int origem){
+           
+            //vetor que guarda os vertices que fazem parte da arvore
+            vector<bool> visitado(V, false);
+            visitado[origem] = true;
+            //vetor que armazena o peso minimo de cada vertice
+            vector<int> key(V, inf);
+            //vetor que armazena o vertice pai de cada vertice
+            vector<int> pai(V, -1);
+            
+            
+            
+            //fila de prioridade que seleciona a proxima aresta de menor peso
+            priority_queue<pair<int, int>, vector<pair<int, int>>,greater<pair<int, int>>> prim;
+            
+            int root = origem;
+            key[root] = 0;
+            //adiciona na fila de prioridade
+                                //peso   //vertice
+            prim.push(make_pair(key[root], root));
 
-            //se nao foi visitado, visito e adiciono o custo
-            soma = soma + (-edge.first);
+            while(!prim.empty()){
+                //extrair o vertice com o menor peso(key) da fila de prioridade
+                int u = prim.top().second;
+                prim.pop();
 
-            visitado[edge.second] = true;
-            for(pair<int,int> edge: grafo[edge.second]){
-                prim.push({-edge.second, edge.first});
-                //adicionar as arestas dele no prim
+                visitado[u] = true;
+
+                //percorrer os vertices adjacentes
+                list<pair<int, int>>::iterator it;
+                for(it = adj[u].begin(); it !=adj[u].end(); it++){
+                    int v = (*it).first;
+                    int peso = (*it).second;
+
+                    //se o vertice nao foi visitado e o peso da aresta for menor que o peso minimo do vertice
+                    if(visitado[v] == false && peso < key[v]){
+                        //atualiza o peso minimo do vertice
+                        key[v] = peso;
+                        //adiciona na fila de prioridade
+                        prim.push(make_pair(key[v], v));
+                        //atualiza o vertice pai
+                        pai[v] = u;
+                    }
+                }
+
             }
-        }
+            //printa a arvore geradora minima
+            for(int i = 1; i < V; i++){
+                if(pai[i] == -1) continue;
+            
+                cout << "aresta: " << pai[i] << " ->" << i << ", peso: " << key[i] << endl; 
 
-        cout << soma << endl;
+            }
+
+        }
+};
+
+
+
+int main(){
+    int VERTEX, EDGES;
+    cout << "--------PRIM-BABYY-WOOOO---------" << endl;
+    cout << "Digite o numero de vertices e arestas: " << endl;
+    cin >> VERTEX >> EDGES;
+    cout << "-------------------" << endl;
+    cout << VERTEX << " " << EDGES << endl;
+    cout << "-------------------" << endl;
+    grafo g(VERTEX);
+    cout<< "insira os vertice u -> vertice v-> peso w" << endl;
+    for(int i=0; i<EDGES; i++){
+        int u, v, w;
+        cin >> u >> v >> w;
+        g.addAresta(u, v, w);
 
     }
-
-int prim(){ //enquanto fizer leitura e v nao é falso
-//montar o grafo
-       
-    cin >> V >> E;
-    pinto();
+    cout << "-------------------" << endl;
+    //vertice de origem aqui vai ser o 1 mesmo
+    int origem = 1;
+    g.primAlgorithm(origem);
 
 
-    return 0;
 }
