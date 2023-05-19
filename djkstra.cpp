@@ -1,73 +1,112 @@
-#include <iostream>
-#include<vector>
+#include<iostream>
+#include<list>
 #include<queue>
+#include<vector>
+#include<limits.h>
+#define inf 9999999
 using namespace std;
 
-int main(){
-    //vertices, arestas
-    int V, E;
-    cin >> V >> E;
-    //cada vertice tem seus vizinhos e peso
-    vector<vector<pair<int, int>>> G(V);
+//criar um grafo
+class Grafo{
+    private:
+        //V = numero de vertices
+        int V;
+        //lista de adjacencia
+        list<pair<int, int>> *adj;
 
-    for(int i = 0; i < E; i++){
-        //vertice U vai para o vertice V que tem peso W
-        int u, v, peso;
-        cin >> u >> v >> peso;
-        v--; u--;
-        //vertice, peso
-        G[u].push_back({v, peso});
-    }
-    //                      distancia, vertice
-    //fila de prioridade
-    priority_queue<pair<int, int>>djikstra; 
-    //vetor de distancias onde tudo começa com valor infinito
-    vector<int> distancia(V, INT16_MAX);
+    public:
+        Grafo(int V){
+            this->V = V+1;
+            //criar a lista de adjacencia (lista de listas) 
+            //o pair = vertice, peso
+            adj = new list<pair<int, int>>[V+1];
+        }
 
-    distancia[0] = 0; 
-    //distancia =0, vetice = 0
-    //ADICIONO NA PRIORITY QUEUE
-    //fila dos candidatos a serem relaxados
-    djikstra.push({0, 0});
-    while(djikstra.size() > 0){
-        int v = djikstra.top().second;
-        int custo = -djikstra.top().first;
-        djikstra.pop(); 
+        //adicionar aresta
+        //u = vertice de origem, v = vertice de destino, w = peso
+        void addAresta(int u, int v, int w){
+            //vertice u vai para o vertice v com peso w
+            adj[u].push_back(make_pair(v, w));
+            //vertice v vai para o vertice u com peso w
+        }
+        //dijkstra vai printar cada vertice e seu custo a partir da origem
+        int dijkstra(int origem, int destino){
+            //vetor de distancias onde tudo começa com valor infinito
+            vector<int> distancia;
+            //vetores visitados 
+            vector<bool> visitado;
 
-        if(custo!= distancia[v]) continue;
-        //em cada relaxamento eu olhos pros vizinhos
-        for(auto edge:G[v]){
-            int u= edge.first;
-            int custo = edge.second;
-            //quando deu consigo um caminho melhor?
-            if(distancia[u] > distancia[v] + custo){
+            //fila de prioridade           
+            priority_queue<pair<int, int>, vector<pair<int, int>>,greater<pair<int, int>>> filaPrioriMin;
+            
+            //vetores de distancai = infinito, distancai origem = 0, visitado = false
+            for(int i =0; i < V; i++){
+                visitado.push_back(false);
+                distancia.push_back(inf);
+            }
+            distancia[origem] = 0;
 
-                distancia[u] = distancia[v] + custo;
-                //"-" é utilizado pois a priority queue vai guardar valor positivo
-                djikstra.push({-distancia[u], u});
+            //adiciona na fila de prioridade 
+            //                                   distancia, vertice
+            filaPrioriMin.push(make_pair(distancia[origem], origem));
+
+            while(!filaPrioriMin.empty()){
+                //extrir o vertice do topo
+                int u = filaPrioriMin.top().second;
+                filaPrioriMin.pop();
+
+                //marcar como visitado
+                if(visitado[u] == false){
+                    visitado[u] = true;
+
+                    //percorrer os vertices adjacentes
+                    list<pair<int, int>>::iterator it;
+
+                    //percorre a lista de adjacencia
+                    for(it = adj[u].begin(); it != adj[u].end(); it++){
+                        //pega o vertice adjacente e o peso
+                        int v = (*it).first;
+                        int peso = (*it).second;
+
+                        //relaxamento
+                        if(distancia[v] > distancia[u] + peso){
+                            //atualiza a distancia
+                            distancia[v] = distancia[u] + peso;
+                            //adiciona na fila de prioridade
+                            filaPrioriMin.push(make_pair(distancia[v], v));
+                            
+
+                        }
+                    }
+                }
             }
 
+            //printa a distancia de cada vertic
+            return distancia[destino];
         }
+};
+
+int main(){
+    int VERTEX, EDGES;
+    cout << "--------DJKSTRA-BABYY-WOOOO---------" << endl;
+    cout << "Digite o numero de vertices e arestas: " << endl;
+    cin >> VERTEX >> EDGES;
+    cout << "-------------------" << endl;
+    cout << VERTEX << " " << EDGES << endl;
+    cout << "-------------------" << endl;
+    Grafo g(VERTEX);
+    cout<< "insira os vertice u -> vertice v-> peso w" << endl;
+    for(int i=0; i<EDGES; i++){
+        int u, v, w;
+        cin >> u >> v >> w;
+        g.addAresta(u, v, w);
+
+    }
+    for (int i=1; i<= VERTEX; i++){
+        //printar o resultado do dijkstra
+        cout<< "Distancia do vertice 1 ao vertice " << i << ": ";
+        cout << g.dijkstra(1, i) << endl;
     }
 
-    for(int d: distancia){
-        cout << d << " ";
-    }
-    cout << "\n";
-
-    
-
+    return 0;
 }
-
-
-
-//entrada
-// 6 8
-// 1 2 5
-// 1 3 4
-// 1 4 2
-// 1 6 6
-// 2 4 1
-// 2 5 7
-// 3 5 6
-// 4 6 1
