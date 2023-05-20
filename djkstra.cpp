@@ -32,18 +32,13 @@ class Grafo{
         //dijkstra vai printar cada vertice e seu custo a partir da origem
         int dijkstra(int origem, int destino){
             //vetor de distancias onde tudo começa com valor infinito
-            vector<int> distancia;
+            vector<int> distancia(V,inf);
             //vetores visitados 
-            vector<bool> visitado;
+            vector<bool> visitado(V,false);
 
             //fila de prioridade           
             priority_queue<pair<int, int>, vector<pair<int, int>>,greater<pair<int, int>>> filaPrioriMin;
-            
-            //vetores de distancai = infinito, distancai origem = 0, visitado = false
-            for(int i =0; i < V; i++){
-                visitado.push_back(false);
-                distancia.push_back(inf);
-            }
+         
             distancia[origem] = 0;
 
             //adiciona na fila de prioridade 
