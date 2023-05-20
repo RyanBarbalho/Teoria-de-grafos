@@ -87,7 +87,7 @@ class grafo{
             vector<aresta> agm; // agm = T
             //vetor de arestas que serao ordenadas por peso
             vector<aresta> arestas; 
-            //(make_set)
+ 
             //vetor que armazena o vertice pai de cada vertice
             vector<int> pai(V);
             //vetor que armazena o rank de cada vertice
