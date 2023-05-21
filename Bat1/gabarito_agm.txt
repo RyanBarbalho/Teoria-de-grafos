@@ -1,0 +1,11 @@
+instances/C125-9.mtx 151
+instances/MANN-a9.mtx 86
+instances/brock200-1.mtx 225
+instances/brock200-2.mtx 241
+instances/exemp.mtx 14
+instances/hamming6-2.mtx 96
+instances/hamming6-4.mtx 312
+instances/johnson16-2-4.mtx 161
+instances/johnson8-2-4.mtx 491
+instances/johnson8-4-4.mtx 115
+instances/keller4.mtx 202
