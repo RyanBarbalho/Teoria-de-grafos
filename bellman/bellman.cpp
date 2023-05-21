@@ -39,7 +39,7 @@ public:
         adj[u].push_back(make_pair(v, w));
         adj[v].push_back(make_pair(u, w));
     }
-    void bellmanFord(int origem)
+    void bellmanFord(int origem, bool o, string arquivoSaida)
     {
         // distance from the origin to the other vertices
         vector<int> distance(V, inf);
@@ -93,12 +93,26 @@ public:
                 }
             }
         }
+        ////////////////////////////// SAIDA //////////////////////////
         // print the shortest path
-        for (int i = 1; i < V; i++)
+        if (o)
         {
-            cout << i << ":" << distance[i] << " ";
+            ofstream saida;
+            saida.open(arquivoSaida);
+            for (int i = 1; i < V; i++)
+            {
+                saida << i << ":" << distance[i] << " ";
+            }
+            saida.close();
         }
-        cout << endl;
+        else
+        {
+            for (int i = 1; i < V; i++)
+            {
+                cout << i << ":" << distance[i] << " ";
+            }
+            cout << endl;
+        }
     }
 };
 
@@ -123,6 +137,8 @@ void rodaBellman(bool o, string arquivoEntrada, string arquivoSaida, int origem)
         iss >> u >> v >> w;
         g.addAresta(u, v, w);
     }
+    entrada.close();
+    g.bellmanFord(origem, o, arquivoSaida);
 }
 
 int main(int argc, char *argv[])
