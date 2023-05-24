@@ -11,7 +11,6 @@
 #include <ostream>
 #include <string.h>
 using namespace std;
-
 // criar um grafo
 struct Aresta
 {
@@ -93,7 +92,7 @@ public:
                 int weight = it->second;
                 if (distance[destination] > distance[u] + weight and distance[u] != inf)
                 {
-                    cout << "Negative weight cycle found" << endl;
+                    cout << "Negative weight cycle found." << endl;
                     return;
                 }
             }
