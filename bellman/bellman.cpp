@@ -46,11 +46,10 @@ public:
     {
         // distance from the origin to the other vertices
         vector<int> distance(V, inf);
-        // parent of each vertex
-        vector<int> parent(V);
+
         // distance from the origin to itself
         distance[origem] = 0;
-        parent[origem] = -1;
+
         // relax all edges V-1 times
         bool updated; // little bit more efficient
         for (int i = 0; i < V - 1; i++)
@@ -72,7 +71,7 @@ public:
                         // update the distance
                         distance[destination] = distance[u] + weight;
                         // update the parent
-                        parent[destination] = u;
+
                         updated = true;
                     }
                 }
@@ -86,6 +85,7 @@ public:
         bool flag = false;
         for (int u = 0; u < V; u++)
         {
+
             for (auto it = adj[u].begin(); it != adj[u].end(); it++)
             {
                 int destination = it->first;
@@ -99,7 +99,7 @@ public:
         }
         ////////////////////////////// SAIDA //////////////////////////
         // print the shortest path
-                if (o)
+        if (o)
         {
             ofstream saida;
 
@@ -187,7 +187,8 @@ int main(int argc, char *argv[])
             cout << "-h : mostra o help\n"
                     "-o <arquivo> : redireciona a saida para o ‘‘arquivo’’\n"
                     "-f <arquivo> : indica o ‘‘arquivo’’ que contém o grafo de entrada\n"
-                    "-i : vértice inicial"
+                    "-i : vértice inicial\n"
+                    "modelo de entrada: ./bellman -f<arquivo de entrada> -o<arquivo de saida> -i<vertice inicial>\n"
                  << endl;
         }
         if (argc - 1 < 2 && (!strcmp(argv[i], "-o") || !strcmp(argv[i], "-f") || !strcmp(argv[i], "-i") || !strcmp(argv[i], "-l")))
