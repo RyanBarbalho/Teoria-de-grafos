@@ -48,6 +48,13 @@ O formato da saída se dará pelo caminho contendo ``v``:``u`` até o fim do cam
 
     1:0 2:3 3:4 4:2 5:10 6:3
 ```
+
+em caso de ciclo negativo encontrado a saída será disposta da seguinte forma:
+
+```ubuntu
+      Negative weight cycle found!
+      1:-15 2:-13 3:-14 4:-1 5:-11 
+```
 A fim de salvar o resultado do algoritmo em algum arquivo deve-se executar o comando:
 
 ```ubuntu
