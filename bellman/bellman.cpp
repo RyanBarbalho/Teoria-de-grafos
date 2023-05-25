@@ -92,7 +92,7 @@ public:
                 if (distance[destination] > distance[u] + weight and distance[u] != inf)
                 {
                     cout << "Negative weight cycle found." << endl;
-                    return;
+                    break;
                 }
             }
         }
