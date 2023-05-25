@@ -109,15 +109,17 @@ public:
             {
                 saida << "Negative weight cycle found!" << endl;
             }
-
-            for (int i = 1; i < V; i++)
+            else
             {
-                if (distance[i] == inf)
-                    distance[i] = -1;
-
-                saida << i << ":" << distance[i] << " ";
+                for (int i = 1; i < V; i++)
+                {
+                    if (distance[i] == inf)
+                    {
+                        distance[i] = -1;
+                    }
+                    saida << i << ":" << distance[i] << " ";
+                }
             }
-
             saida.close();
         }
         else
@@ -126,15 +128,19 @@ public:
             {
                 cout << "Negative weight cycle found!" << endl;
             }
-            for (int i = 1; i < V; i++)
+            else
             {
+                for (int i = 1; i < V; i++)
+                {
                 // esse verificador foi posto caso o grafo nao seja conexo
-                if (distance[i] == inf)
-                    distance[i] = -1;
-
-                cout << i << ":" << distance[i] << " ";
+                    if (distance[i] == inf)
+                    {
+                        distance[i] = -1;
+                    }
+                    cout << i << ":" << distance[i] << " ";
+                }
+                cout << endl;
             }
-            cout << endl;
         }
     }
 };
