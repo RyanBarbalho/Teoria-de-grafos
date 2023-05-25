@@ -83,6 +83,7 @@ public:
         // check for negative weight cycles
         // if we see any change in the shortest path, there is a negative cycle
         // so we execute the algorithm one more time
+        bool flag = false;
         for (int u = 0; u < V; u++)
         {
             for (auto it = adj[u].begin(); it != adj[u].end(); it++)
@@ -91,17 +92,24 @@ public:
                 int weight = it->second;
                 if (distance[destination] > distance[u] + weight and distance[u] != inf)
                 {
-                    cout << "Negative weight cycle found." << endl;
+                    flag = true;
                     break;
                 }
             }
         }
         ////////////////////////////// SAIDA //////////////////////////
         // print the shortest path
-        if (o)
+                if (o)
         {
             ofstream saida;
+
             saida.open(arquivoSaida);
+            // se o grafo tiver ciclo negativo
+            if (flag == true)
+            {
+                saida << "Negative weight cycle found!" << endl;
+            }
+
             for (int i = 1; i < V; i++)
             {
                 if (distance[i] == inf)
@@ -109,10 +117,15 @@ public:
 
                 saida << i << ":" << distance[i] << " ";
             }
+
             saida.close();
         }
         else
         {
+            if (flag == true)
+            {
+                cout << "Negative weight cycle found!" << endl;
+            }
             for (int i = 1; i < V; i++)
             {
                 // esse verificador foi posto caso o grafo nao seja conexo
