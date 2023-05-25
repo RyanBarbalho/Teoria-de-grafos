@@ -18,6 +18,12 @@ assim, o arquivo será compilado no formato binario como bellman.bin. A fim de o
                     "-i : vértice inicial\n"
                     "modelo de entrada: ./bellman -f<arquivo de entrada> -o<arquivo de saida> -i<vertice inicial>\n"
 ```
+# Avaliação
+Para a avaliação do algoritmo será executado o comando:
+```ubuntu
+bat.sh 
+```
+O comando a cima irá verificar a saída que sair do computador do usuário e comparar com a saída do gabarito localizada na pasta ``sp``
 
 # formato da entrada
 
