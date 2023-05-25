@@ -126,7 +126,7 @@ public:
                 // abre o arquivo de saida e escreve dentro dele
                 saida.open(arquivoSaida);
                 for (int i = 0; i < grafoSaida.size(); i++)
-                {
+                { // first = vertice 1, second = vertice 2
                     saida << "(" << grafoSaida[i].first << "," << grafoSaida[i].second << ") ";
                 }
                 saida.close();
